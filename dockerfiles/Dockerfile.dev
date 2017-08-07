@@ -80,7 +80,13 @@ ENV CGO_LDFLAGS -L/lib
 ENV PROTOC_VERSION 3.3.0
 
 COPY --from=build /usr/local/bin /usr/local/bin
+COPY --from=build /usr/local/go /usr/local/go
+
+# Custom settings for login shells -- will probably remove this
+ADD etc/profile.d /etc/profile.d
 
 WORKDIR /go
-CMD [ "sh" ]
+RUN mkdir -p /go/bin /go/pkg /go/src
+ENV IN_DOCKER 1
+CMD [ "bash" ]
 
